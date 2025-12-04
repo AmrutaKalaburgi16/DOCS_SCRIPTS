@@ -82,7 +82,7 @@ def execute_query_and_write_to_csv(query, DESTINATION_BASE_DIR):
         table_name_match = re.search(r'FROM\s+(?:\w+\.)?(\w+)', query, re.IGNORECASE)
         if table_name_match:
             table_name = table_name_match.group(1)
-            csv_filename = f'{table_name}.csv'
+            csv_filename = f'{table_name}_phase_{phase}.csv'
         else:
             logging.error(f'Failed to extract table name from query: {query}')
             return
@@ -150,14 +150,6 @@ send_email_notification({
     'total_extracted': total_extracted  # Use total_extracted, not row_count
 }, __file__)
 
-def main():
-    # Example usage
-    if len(sys.argv) < 1:
-        print("Usage: python export_docs_temp_table.py  phase ")
-
-        sys.exit(1)
-    
-    phase = sys.argv[1]if len(sys.argv) > 1 else None 
     
 
 print(f"EXTRACTION SUMMARY:")
