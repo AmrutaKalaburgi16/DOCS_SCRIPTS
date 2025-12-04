@@ -22,12 +22,13 @@ DB_DSN = 'lllpdb.corp.intranet:1581/LLLP'
 
 
 
-if len(sys.argv) < 1:
-    print("Usage: python export_docs_temp_table.py  phase ")
+if len(sys.argv) < 2:
+    print("Usage: python export_docs_temp_table.py  phase tablename")
 
     sys.exit(1)
     
-phase = sys.argv[1]if len(sys.argv) > 1 else None 
+phase = sys.argv[1]
+table_name= sys.argv[2]if len(sys.argv) > 2 else None 
 
 
 
@@ -66,11 +67,7 @@ logging.info(f'Script started at: {start_time}')
 
 
 queries = [
-    f"SELECT * FROM bspd_docs_notes_temp where phase='{phase}'",
-    f"SELECT * FROM bspd_docs_addresses_temp where phase='{phase}' ",
-    f"SELECT * FROM bspd_docs_attributes_temp where phase='{phase}'",
-    f"SELECT * FROM bspd_docs_history_temp where phase='{phase}' ",
-    f"SELECT * FROM BSPD_DOCS_DOCUMENTS where phase='{phase}'"
+    f"SELECT * FROM {table_name} where phase='{phase}'"
     ]
 
 
@@ -93,13 +90,9 @@ def execute_query_and_write_to_csv(query, DESTINATION_BASE_DIR):
         # logging.info(f"Processing for Billing App ID: {billing_app_id}, Company Owner ID: {company_owner_id}")
 
         # logging.info(f'Executing query: {formatted_query}')
-        table_name_match = re.search(r'FROM\s+(?:\w+\.)?(\w+)', query, re.IGNORECASE)
-        if table_name_match:
-            table_name = table_name_match.group(1)
-            csv_filename = f'{table_name}_phase_{phase}.csv'
-        else:
-            logging.error(f'Failed to extract table name from query: {query}')
-            return
+       
+        csv_filename = f'{table_name}_phase_{phase}.csv'
+       
 
         csv_file_path = os.path.join(DESTINATION_BASE_DIR, csv_filename)
         mode = 'w'  # if is_first_batch else 'a'
