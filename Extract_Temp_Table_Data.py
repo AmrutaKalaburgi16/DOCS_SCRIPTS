@@ -16,12 +16,22 @@ DB_PASSWORD = 'Docs$2025'
 DB_DSN = 'lllpdb.corp.intranet:1581/LLLP'
 
 
+
+
+
+
+
+
 if len(sys.argv) < 1:
     print("Usage: python export_docs_temp_table.py  phase ")
 
     sys.exit(1)
     
 phase = sys.argv[1]if len(sys.argv) > 1 else None 
+
+
+
+
 
 #date='2018-10-06'
 def connect_to_oracle():
@@ -62,6 +72,10 @@ queries = [
     f"SELECT * FROM bspd_docs_history_temp where phase='{phase}' ",
     f"SELECT * FROM BSPD_DOCS_DOCUMENTS where phase='{phase}'"
     ]
+
+
+
+
 print("queries defined successfully")
 
 def execute_query_and_write_to_csv(query, DESTINATION_BASE_DIR):
@@ -150,7 +164,6 @@ send_email_notification({
     'total_extracted': total_extracted  # Use total_extracted, not row_count
 }, __file__)
 
-    
 
 print(f"EXTRACTION SUMMARY:")
 print(f"Total records extracted: {total_extracted:,}")
@@ -160,3 +173,4 @@ logging.info(f'Script ended at: {end_time}')
 time_taken = end_time - start_time
 print(f'Total time taken: {time_taken}')
 logging.info(f'Total time taken: {time_taken}')
+
