@@ -19,12 +19,18 @@ DB_DSN = 'lllpdb.corp.intranet:1581/LLLP'
 
 
 
+
+
+
 if len(sys.argv) < 1:
     print("Usage: python export_docs_temp_table.py  phase ")
 
     sys.exit(1)
     
 phase = sys.argv[1]if len(sys.argv) > 1 else None 
+
+
+
 
 
 #date='2018-10-06'
@@ -60,14 +66,15 @@ logging.info(f'Script started at: {start_time}')
 
 
 queries = [
-
-
     f"SELECT * FROM bspd_docs_notes_temp where phase='{phase}'",
     f"SELECT * FROM bspd_docs_addresses_temp where phase='{phase}' ",
     f"SELECT * FROM bspd_docs_attributes_temp where phase='{phase}'",
     f"SELECT * FROM bspd_docs_history_temp where phase='{phase}' ",
     f"SELECT * FROM BSPD_DOCS_DOCUMENTS where phase='{phase}'"
     ]
+
+
+
 
 print("queries defined successfully")
 
@@ -89,7 +96,7 @@ def execute_query_and_write_to_csv(query, DESTINATION_BASE_DIR):
         table_name_match = re.search(r'FROM\s+(?:\w+\.)?(\w+)', query, re.IGNORECASE)
         if table_name_match:
             table_name = table_name_match.group(1)
-            csv_filename = f'{table_name}.csv'
+            csv_filename = f'{table_name}_phase_{phase}.csv'
         else:
             logging.error(f'Failed to extract table name from query: {query}')
             return
@@ -165,7 +172,4 @@ logging.info(f'Script ended at: {end_time}')
 time_taken = end_time - start_time
 print(f'Total time taken: {time_taken}')
 logging.info(f'Total time taken: {time_taken}')
-
-
-
 
