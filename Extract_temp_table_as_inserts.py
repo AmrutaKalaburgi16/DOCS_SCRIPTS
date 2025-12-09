@@ -41,8 +41,9 @@ def export_table_as_inserts(table_name, output_file=None):
         # Get table columns
         cursor.execute(f"""
             SELECT column_name, data_type 
-            FROM user_tab_columns 
+            FROM all_tab_columns 
             WHERE table_name = UPPER('{table_name}')
+            and owner='DOCS_OWNER'
             ORDER BY column_id
         """)
         columns = cursor.fetchall()
